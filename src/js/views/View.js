@@ -61,6 +61,16 @@ export default class View {
     this._parentElement.innerHTML = '';
   }
 
+  renderResultsCount(numResults) {
+    const counterEl = document.querySelector('.results-counter');
+    counterEl.innerHTML = '';
+    const markup = `
+      <div class="results__count">${numResults} results</div>
+    `;
+    // this._clear();
+    counterEl.insertAdjacentHTML('afterbegin', markup);
+  }
+
   // Loading spinner
   renderSpinner() {
     const markup = `

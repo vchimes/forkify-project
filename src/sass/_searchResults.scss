@@ -1,5 +1,15 @@
+// Total results counter styling
+.results-counter {
+  display: flex;
+  align-items: center;
+  padding-left: 32.5px;
+  height: 2.5rem;
+  font-weight: 700;
+  font-size: 16px;
+}
+
 .search-results {
-  padding: 3rem 0;
+  padding: 1rem 0 3rem;
   display: flex;
   flex-direction: column;
 }
@@ -9,25 +19,44 @@
   margin-bottom: 2rem;
 }
 
+// Controlling pagination elements
 .pagination {
-  margin-top: auto;
-  padding: 0 3.5rem;
-
-  &::after {
-    content: '';
-    display: table;
-    clear: both;
-  }
-
-  &__btn {
-    &--prev {
-      float: left;
-    }
-    &--next {
-      float: right;
-    }
-  }
+  display: flex;
+  justify-content: space-between;
+  padding-left: 32.5px;
+  padding-right: 32.5px;
 }
+
+// Styling borrowed from Wulthus. Thank you :)
+.pagination__page-count {
+  color: #f48982;
+  font-size: 1.6rem;
+  font-weight: 1000;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10rem;
+  display: block;
+  transition: all 0.2s;
+}
+// Jonas' original pagination styling
+// .pagination {
+//   margin-top: auto;
+//   padding: 0 3.5rem;
+
+//   &::after {
+//     content: '';
+//     display: table;
+//     clear: both;
+//   }
+
+//   &__btn {
+//     &--prev {
+//       float: left;
+//     }
+//     &--next {
+//       float: right;
+//     }
+//   }
+// }
 
 .copyright {
   color: $color-grey-dark-2;
