@@ -54,6 +54,7 @@ class PaginationView extends View {
   `;
     // Hides both buttons if only ONE page
     if (numPages === 1) return pageCountMarkup;
+    if (numPages === 0) return '';
 
     // Return results based on ternary operation above
     return prevButton + pageCountMarkup + nextButton;
