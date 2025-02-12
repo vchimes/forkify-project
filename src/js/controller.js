@@ -6,6 +6,7 @@ import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
 import bookmarksView from './views/bookmarksView.js';
 import addRecipeView from './views/addRecipeView.js';
+import homeView from './views/homeView.js';
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
@@ -62,6 +63,11 @@ const controlSearchResults = async function () {
   } catch (err) {
     console.log(err);
   }
+};
+
+const controlHome = function () {
+  window.history.replaceState(null, '', '/');
+  location.reload();
 };
 
 const controlPagination = function (goToPage) {
@@ -137,5 +143,8 @@ const init = function () {
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
   addRecipeView.addHandlerUpload(controlAddRecipe);
+  homeView.addHandlerHome(controlHome);
+
+  window.history.replaceState(null, '', '/');
 };
 init();
