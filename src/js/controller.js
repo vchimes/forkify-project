@@ -124,6 +124,9 @@ const controlAddRecipe = async function (newRecipe) {
     console.error('💥', err);
     addRecipeView.renderError(err.message);
   }
+  setTimeout(function () {
+    location.reload();
+  }, 1500);
 };
 
 const init = function () {
