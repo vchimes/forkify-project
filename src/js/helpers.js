@@ -31,6 +31,35 @@ export const AJAX = async function (url, uploadData = undefined) {
   }
 };
 
+export const deleteJSON = async function (url) {
+  try {
+    const fetchPro = fetch(url, {
+      method: 'DELETE',
+    });
+
+    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+
+    // Attempt to parse response as JSON, otherwise set data to empty object
+    const data = await res.json().catch(() => ({}));
+
+    // Catch the error indicating that the user is Unauthorized to delete recipe
+    if (!res.ok) {
+      const error = new Error(
+        res.status === 401
+          ? `Unauthorized (${res.status})`
+          : `${data.message || 'Failed to delete'} (${res.status})`
+      );
+      error.status = res.status;
+      throw error;
+    }
+
+    return data;
+  } catch (err) {
+    console.error('Error in deleteJSON:', err);
+    throw err;
+  }
+};
+
 /*
 export const getJSON = async function (url) {
   try {
