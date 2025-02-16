@@ -1,7 +1,7 @@
 import { async } from 'regenerator-runtime';
 import { API_URL, RES_PER_PAGE, KEY } from './config.js';
 // import { getJSON, sendJSON } from './helpers.js';
-import { AJAX } from './helpers.js';
+import { AJAX, deleteJSON } from './helpers.js';
 
 export const state = {
   recipe: {},
@@ -42,6 +42,32 @@ export const loadRecipe = async function (id) {
   } catch (err) {
     // Temporary error handling
     console.error(`${err} 💥💥💥`);
+    throw err;
+  }
+};
+
+export const deleteRecipe = async function (id) {
+  try {
+    await deleteJSON(`${API_URL}${id}?key=${KEY}`);
+
+    // Filter out deleted recipe from search results state
+    state.search.results = state.search.results.filter(
+      recipe => recipe.id !== id
+    );
+
+    // Delete bookmark
+    if (state.bookmarks.some(bookmark => bookmark.id === id)) {
+      deleteBookmark(id);
+    }
+
+    // Clear recipe state if current recipe matches deleted recipe
+    if (state.recipe.id === id) state.recipe = {};
+  } catch (err) {
+    const errMessage =
+      err.status === 401
+        ? 'You do not have permission to delete this recipe.'
+        : `Error deleting recipe with id: ${id}, ${err} 💥💥💥💥`;
+    console.error(errMessage);
     throw err;
   }
 };

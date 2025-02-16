@@ -120,7 +120,7 @@ const controlAddRecipe = async function (newRecipe) {
     bookmarksView.render(model.state.bookmarks);
 
     // Change ID in URL
-    window.history.pushState(null, '', `${model.state.recipe.id}`);
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
 
     // Close form window
     setTimeout(function () {
@@ -135,11 +135,37 @@ const controlAddRecipe = async function (newRecipe) {
   }, 1500);
 };
 
+const controlDeleteRecipe = async function () {
+  try {
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+
+    // Delete the recipe
+    await model.deleteRecipe(id);
+
+    // Update results view
+    resultsView.render(model.getSearchResultsPage());
+
+    // Update pagination
+    paginationView.render(model.state.search);
+
+    // Update bookmarks
+    bookmarksView.render(model.state.bookmarks);
+
+    // Clear recipe view
+    recipeView.renderMessage('Recipe was successfully deleted.');
+  } catch (err) {
+    console.error('Error in controlDeleteRecipe:', err);
+    recipeView.renderError('You do not have permission to delete this recipe.');
+  }
+};
+
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
+  recipeView.addHandlerDeleteRecipe(controlDeleteRecipe);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
   addRecipeView.addHandlerUpload(controlAddRecipe);

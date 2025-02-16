@@ -32,6 +32,14 @@ class RecipeView extends View {
     });
   }
 
+  addHandlerDeleteRecipe(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--delete-recipe');
+      if (!btn) return;
+      handler();
+    });
+  }
+
   _generateMarkup() {
     return `
       <figure class="recipe__fig">
