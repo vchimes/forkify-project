@@ -92,12 +92,16 @@
 
 .btn--round {
   background-image: $gradient;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 600;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   height: 4.5rem;
   width: 4.5rem;
-  // margin-left: auto;
+  margin-right: 17.5px;
   transition: all 0.2s;
 
   display: flex;
