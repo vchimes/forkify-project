@@ -22,19 +22,21 @@ import 'regenerator-runtime/runtime';
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
-
     if (!id) return;
+
+    // Show loading spinner
     recipeView.renderSpinner();
 
-    // 0. Update results view to mark selected recipe
+    // Update results view to mark selected recipe
     resultsView.update(model.getSearchResultsPage());
-    // 1. Updating bookmarks view
+
+    // Updating bookmarks view
     bookmarksView.update(model.state.bookmarks);
 
-    // 2. Loading recipe
+    // Loading recipe
     await model.loadRecipe(id);
 
-    // 3. Rendering recipe
+    // Rendering recipe
     recipeView.render(model.state.recipe);
   } catch (err) {
     recipeView.renderError();
@@ -44,9 +46,14 @@ const controlRecipes = async function () {
 
 const controlSearchResults = async function () {
   try {
+    // Show loading spinner
     resultsView.renderSpinner();
-    // Get search query
-    const query = searchView.getQuery();
+
+    // Clear recipe view so unrelated recipe is not being displayed
+    recipeView.resetRecipeView();
+
+    // Get search query or use query in state for updating search results after deleting a recipe
+    const query = searchView.getQuery() || model.state.search.query;
     if (!query) return;
 
     // Load search results
@@ -140,6 +147,9 @@ const controlDeleteRecipe = async function () {
     const id = window.location.hash.slice(1);
     if (!id) return;
 
+    // Render loading spinner
+    recipeView.renderSpinner();
+
     // Delete the recipe
     await model.deleteRecipe(id);
 
@@ -152,8 +162,17 @@ const controlDeleteRecipe = async function () {
     // Update bookmarks
     bookmarksView.render(model.state.bookmarks);
 
-    // Clear recipe view
+    // Show successful deletion message
     recipeView.renderMessage('Recipe was successfully deleted.');
+
+    // Clear recipe view after delay
+    setTimeout(function () {
+      recipeView.renderMessage('Search for another recipe or ingredient!');
+      window.history.pushState(null, '', '/');
+
+      // Update search results
+      controlSearchResults();
+    }, 1500);
   } catch (err) {
     console.error('Error in controlDeleteRecipe:', err);
     recipeView.renderError('You do not have permission to delete this recipe.');
